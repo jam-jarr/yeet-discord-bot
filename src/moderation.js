@@ -1,3 +1,5 @@
+import {DiscordAPIError} from 'discord.js';
+
 export function deleteUntilId(message, n) {
   recursiveBatchDelete(message, {after: message.id});
 }
@@ -21,7 +23,28 @@ function recursiveBatchDelete(message, options, n) {
           }
         });
       })
-      .catch(console.error);
+      .catch((err)=> {
+        if (err instanceof DiscordAPIError) {
+          console.err('Some messages are too old for bulk delete!');
+          console.log('Using regular delete strategy');
+          recursiveDelete(message, options);
+        }
+      });
+}
+
+function recursiveDelete(message, options) {
+  const {channel} = message;
+  const n = 0;
+  channel.messages
+      .fetch(options)
+      .then((msgs)=>{
+        msgs.each((msg)=>{
+          msg.delete();
+          n++;
+        });
+      })
+      .then(channel.send(`Cleared \`${n} messages!\``))
+      .catch(console.err);
 }
 
 export function spamMessages(channel, content, n) {

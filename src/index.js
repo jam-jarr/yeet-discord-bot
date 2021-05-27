@@ -26,7 +26,8 @@ client.on('message', (msg) => {
     const {channel} = msg;
     switch (command) {
       case 'clear':
-        deleteNum(msg, args[0]);
+        const num = args[0];
+        deleteNum(msg, num + 1);
         break;
       case 'clearuntil':
         const msgID = args[0];
@@ -40,10 +41,10 @@ client.on('message', (msg) => {
         spamMessages(channel, content, n);
         break;
       case 'colbify':
-        colbify(guild);
+        colbify(msg);
         break;
       case 'decolbify':
-        decolbify(guild);
+        decolbify(msg);
         break;
       default:
         break;
