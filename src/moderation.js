@@ -23,7 +23,7 @@ function recursiveSmartDelete(message, options, n) {
                 // 50 is the max ammount of that can be bulk deleted
                 recursiveSmartDelete(message, options, n);
               } else {
-                channel.send(`Cleared \`${n} messages!\``)
+                channel.send(`Cleared \`${n-1} messages!\``)
                     .then((response) => {
                       setTimeout(() => response.delete(), 3000);
                     });
@@ -53,7 +53,10 @@ function deleteNumBatchless(message, options) {
           msg.delete();
           n++;
         });
-        channel.send(`Cleared \`${n} messages!\``);
+        channel.send(`Cleared \`${n-1} messages!\``)
+            .then((response) => {
+              setTimeout(() => response.delete(), 3000);
+            });
       })
       .catch(console.err);
 }
