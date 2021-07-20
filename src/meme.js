@@ -5,32 +5,36 @@ export function colbify(msg) {
   const {guild} = msg;
   const names = {};
   guild.members.fetch()
-      .then((members) => members.each((member) => {
-        names[member.id] = member.nickname;
-        member.setNickname(`Colby Hager #${n}`);
-        n++;
-      }))
-      .then(() => msg.channel.send('\`Colbification Complete\`'))
-      .catch(() => {
-        console.log('Error to colbify, so sad');
+      .then((members) => {
+        members.filter((member) => member.manageable)
+            .each((member) => {
+              names[member.id] = member.nickname;
+              member.setNickname(`Colby Hager #${n}`);
+              n++;
+            });
+        fs.writeFileSync('./nicknames.json', JSON.stringify(names));
+      })
+      .then(() => msg.channel.send('\`Colbificating\`'))
+      .catch((err) => {
+        console.error(err);
         n--;
       });
-  fs.writeFileSync('./nicknames.json', JSON.stringify(names));
 }
 
 export function decolbify(msg) {
   const {guild} = msg;
-  const nicknames = fs.readFileSync('./nicknames.json');
+  const nicknames = JSON.parse(fs.readFileSync('./nicknames.json'));
   guild.members.fetch()
-      .then((members) => members.each((member) => {
-        if (nicknames[member.id]) {
-          member.setNickname(nicknames[member.id]);
-        } else {
-          member.setNickname(member.user.username);
-        }
-      }))
-      .then(() => msg.channel.send('\`Decolbification Complete\`'))
-      .catch(() => {
-        console.log('Error to decolbify, it was meant to be');
-      });
+      .then((members) => members.filter((member) => member.manageable)
+          .each((member) => {
+            if (nicknames[member.id]) {
+              member.setNickname(nicknames[member.id])
+                  .catch(console.error);
+            } else {
+              member.setNickname(member.user.username)
+                  .catch(console.error);
+            }
+          }))
+      .then(() => msg.channel.send('\`Decolbificating\`'))
+      .catch(console.error);
 }

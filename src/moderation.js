@@ -26,7 +26,8 @@ function recursiveSmartDelete(message, options, n) {
                 channel.send(`Cleared \`${n-1} messages!\``)
                     .then((response) => {
                       setTimeout(() => response.delete(), 3000);
-                    });
+                    })
+                    .catch(console.error);
               }
             })
             .catch((err) => {
@@ -56,13 +57,15 @@ function deleteNumBatchless(message, options) {
         channel.send(`Cleared \`${n-1} messages!\``)
             .then((response) => {
               setTimeout(() => response.delete(), 3000);
-            });
+            })
+            .catch(console.error);
       })
       .catch(console.err);
 }
 
 export function spamMessages(channel, content, n) {
   for (let i = 0; i <= n; i++) {
-    channel.send(content + i);
+    channel.send(content + i)
+        .catch(console.error);
   }
 }
