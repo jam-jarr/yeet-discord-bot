@@ -43,7 +43,7 @@ client.on('message', (msg) => {
         namify(msg, ((n) => `Colby Hager #${n}`), 'Colbificating');
         break;
       case 'decolbify':
-        namify(msg, 'Decolbificating');
+        denamify(msg, 'Decolbificating');
         break;
       case 'nameify':
         namify(msg, args[0], args[1]);
@@ -52,7 +52,7 @@ client.on('message', (msg) => {
         denamify(msg, args[0]);
         break;
       case 'libtard':
-        nameify(msg, ((n) => `Liberal`), '☭Generating Commies☭');
+        namify(msg, ((n) => `Liberal`), '☭Generating Commies☭');
         break;
       case 'factsandlogic':
         denamify(msg, 'Destroying the left with facts and logic 🙀');

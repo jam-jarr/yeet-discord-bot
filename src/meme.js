@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-export function namify(msg, namefn, response) {
+export function namify(msg, nicknameCallback, response) {
   let n = 0;
   const {guild} = msg;
   const names = {};
@@ -9,13 +9,13 @@ export function namify(msg, namefn, response) {
         members.filter((member) => member.manageable)
             .each((member) => {
               names[member.id] = member.nickname;
-              member.setNickname(namefn(n));
+              member.setNickname(nicknameCallback(n));
               n++;
             });
-        fs.writeFileSync('./nicknames.json', JSON.stringify(names));
+        fs.writeFileSync('data/nicknames.json', JSON.stringify(names));
       })
       .then(() => {
-        if (repsonse) msg.channel.send(`\`${response}\``);
+        if (response) msg.channel.send(`\`${response}\``);
       })
       .catch((err) => {
         console.error(err);
@@ -25,7 +25,7 @@ export function namify(msg, namefn, response) {
 
 export function denamify(msg, response) {
   const {guild} = msg;
-  const nicknames = JSON.parse(fs.readFileSync('./nicknames.json'));
+  const nicknames = JSON.parse(fs.readFileSync('data/nicknames.json'));
   guild.members.fetch()
       .then((members) => members.filter((member) => member.manageable)
           .each((member) => {
@@ -38,7 +38,7 @@ export function denamify(msg, response) {
             }
           }))
       .then(() => {
-        if (repsonse) msg.channel.send(`\`${response}\``);
+        if (response) msg.channel.send(`\`${response}\``);
       })
       .catch(console.error);
 }
