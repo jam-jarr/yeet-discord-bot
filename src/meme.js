@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-export function colbify(msg) {
+export function namify(msg, namefn, response) {
   let n = 0;
   const {guild} = msg;
   const names = {};
@@ -9,19 +9,21 @@ export function colbify(msg) {
         members.filter((member) => member.manageable)
             .each((member) => {
               names[member.id] = member.nickname;
-              member.setNickname(`Colby Hager #${n}`);
+              member.setNickname(namefn(n));
               n++;
             });
         fs.writeFileSync('./nicknames.json', JSON.stringify(names));
       })
-      .then(() => msg.channel.send('\`Colbificating\`'))
+      .then(() => {
+        if (repsonse) msg.channel.send(`\`${response}\``);
+      })
       .catch((err) => {
         console.error(err);
         n--;
       });
 }
 
-export function decolbify(msg) {
+export function denamify(msg, response) {
   const {guild} = msg;
   const nicknames = JSON.parse(fs.readFileSync('./nicknames.json'));
   guild.members.fetch()
@@ -35,6 +37,8 @@ export function decolbify(msg) {
                   .catch(console.error);
             }
           }))
-      .then(() => msg.channel.send('\`Decolbificating\`'))
+      .then(() => {
+        if (repsonse) msg.channel.send(`\`${response}\``);
+      })
       .catch(console.error);
 }

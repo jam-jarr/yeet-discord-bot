@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const {deleteUntilId, spamMessages, deleteNum} = require('./moderation');
-const {colbify, decolbify} = require('./meme');
+const {namify, denamify} = require('./meme');
 const client = new Discord.Client();
 
 const prefix = '!';
@@ -40,10 +40,22 @@ client.on('message', (msg) => {
         spamMessages(channel, content, n);
         break;
       case 'colbify':
-        colbify(msg);
+        namify(msg, ((n) => `Colby Hager #${n}`), 'Colbificating');
         break;
       case 'decolbify':
-        decolbify(msg);
+        namify(msg, 'Decolbificating');
+        break;
+      case 'nameify':
+        namify(msg, args[0], args[1]);
+        break;
+      case 'denamify':
+        denamify(msg, args[0]);
+        break;
+      case 'libtard':
+        nameify(msg, ((n) => `Liberal`), '☭Generating Commies☭');
+        break;
+      case 'factsandlogic':
+        denamify(msg, 'Destroying the left with facts and logic 🙀');
         break;
       default:
         break;
