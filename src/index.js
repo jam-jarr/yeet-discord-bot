@@ -20,8 +20,14 @@ client.on('message', (msg) => {
       return;
     }
 
-    // command
-    const args = msg.content.slice(prefix.length).trim().split(' ');
+    // remove prefix, trim whitespace,
+    // split by spaces not in quotes, then remove quotes from all args
+    const args = msg.content
+        .slice(prefix.length)
+        .trim()
+        .match(/("|')[^"']*("|')|[^\s]+/g)
+        .map((match) => match.replaceAll(/'|"/g, ''));
+    args.forEach(console.log);
     const command = args.shift().toLowerCase();
     const {channel} = msg;
     switch (command) {
@@ -45,8 +51,12 @@ client.on('message', (msg) => {
       case 'decolbify':
         denamify(msg, 'Decolbificating');
         break;
-      case 'nameify':
-        namify(msg, args[0], args[1]);
+      case 'namify':
+        // eval expression wrapped in parenthesis to make a function
+        // rather than executing said function
+        // WARNING: I am well aware this is a big security risk
+        const dangerousCustomCallback = eval(`(${args[0]})`);
+        namify(msg, dangerousCustomCallback, args[1]);
         break;
       case 'denamify':
         denamify(msg, args[0]);
