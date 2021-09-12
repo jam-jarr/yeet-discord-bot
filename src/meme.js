@@ -15,7 +15,8 @@ export function namify(msg, nicknameCallback, response) {
         fs.writeFileSync('data/nicknames.json', JSON.stringify(names));
       })
       .then(() => {
-        if (response) msg.channel.send(`\`${response}\``);
+        const res = response || 'Namifying';
+        msg.channel.send(`\`${res}\``);
       })
       .catch((err) => {
         console.error(err);
@@ -38,7 +39,8 @@ export function denamify(msg, response) {
             }
           }))
       .then(() => {
-        if (response) msg.channel.send(`\`${response}\``);
+        const res = response || 'Denamifying';
+        msg.channel.send(`\`${res}\``);
       })
       .catch(console.error);
 }

@@ -3,14 +3,14 @@ const {deleteUntilId, spamMessages, deleteNum} = require('./moderation');
 const {namify, denamify} = require('./meme');
 const client = new Discord.Client();
 
-const prefix = '!';
+const prefix = '!!';
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
 });
 
 client.on('message', (msg) => {
-  if (msg.content[0] === prefix) {
+  if (msg.content.slice(0, prefix.length) === prefix) {
     const guild = msg.guild;
     // check if they are on a server
     if (!guild) return;
