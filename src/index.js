@@ -26,7 +26,7 @@ client.on('message', (msg) => {
         .slice(prefix.length)
         .trim()
         .match(/("|')[^"']*("|')|[^\s]+/g)
-        .map((match) => match.replaceAll(/'|"/g, ''));
+        .map((match) => match.replace(/'|"/g, ''));
     args.forEach(console.log);
     const command = args.shift().toLowerCase();
     const {channel} = msg;
