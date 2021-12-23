@@ -1,4 +1,5 @@
 const Discord = require('discord.js');
+const discordToken = require('dotenv').config();
 const {deleteUntilId, spamMessages, deleteNum} = require('./moderation');
 const {namify, denamify} = require('./meme');
 const client = new Discord.Client();
@@ -73,4 +74,4 @@ client.on('message', (msg) => {
   }
 });
 
-client.login('ODQ2OTcxMzIwODg0NjU4MTk2.YK3Rgg.slrhohTKz45ndqO6GtfQ7lfSKr0');
+client.login(discordToken);
