@@ -20,7 +20,8 @@
   },
   "homepage": "https://github.com/realGiB/yeet-discord-bot#readme",
   "dependencies": {
-    "discord.js": "^12.5.3"
+    "discord.js": "^12.5.3",
+    "dotenv": "^10.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.14.5",
