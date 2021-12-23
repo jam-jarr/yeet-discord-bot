@@ -53,10 +53,8 @@ client.on('message', (msg) => {
         denamify(msg, 'Decolbificating');
         break;
       case 'namify':
-        // eval expression wrapped in parenthesis to make a function
-        // rather than executing said function
-        // WARNING: I am well aware this is a big security risk
-        const dangerousCustomCallback = eval(`(${args[0]})`);
+        // WARNING: This is a potential security risk, idk I'm not an expert.
+        const dangerousCustomCallback = Function('n', `return ${args[0]}`);
         namify(msg, dangerousCustomCallback, args[1]);
         break;
       case 'denamify':
